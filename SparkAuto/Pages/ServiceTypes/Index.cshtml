@@ -1,0 +1,80 @@
+﻿@page
+@model SparkAuto.Pages.ServiceTypes.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info">Service type list</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-page="Create" class="btn btn-info">
+                Create new
+                <i class="fa fa-plus"></i>
+            </a>
+
+        </div>
+    </div>
+
+    <br />
+
+    <div>
+        @if (Model.ServiceType.Count == 0)
+        {
+            <p>No Service Types exist. Please create a new service type.</p>
+        }
+        else
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+                    <th>
+                        @Html.DisplayNameFor(m => m.ServiceType[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ServiceType[0].Price)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.ServiceType)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Price)
+                        </td>
+                        <td style="width: 150px">
+                            <div class="btn-group" role="group">
+                                <a asp-page="Edit" class="btn btn-primary text-white" asp-route-id="@item.Id">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a asp-page="Details" class="btn btn-success text-white" asp-route-id="@item.Id">
+                                    <i class="fa fa-list-alt"></i>
+                                </a>
+
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a asp-page="Delete" class="btn btn-danger text-white" asp-route-id="@item.Id">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+    </div>
+</div>
+
+
