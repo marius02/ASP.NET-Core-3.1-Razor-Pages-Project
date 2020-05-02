@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SparkAuto.Data;
 
 namespace SparkAuto.Areas.Identity.Pages.Account
 {
@@ -20,12 +21,14 @@ namespace SparkAuto.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _db;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _userManager = userManager;
+            _db = db;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -77,6 +80,11 @@ namespace SparkAuto.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                var user = _db.Users.FirstOrDefault(u => u.Email == Input.Email);
+                if (user != null && !user.EmailConfirmed)
+                {
+                    return RedirectToPage("VerifyEmail", new {id = Input.Email});
+                }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
