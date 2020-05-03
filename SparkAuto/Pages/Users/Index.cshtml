@@ -88,7 +88,10 @@
                         <td>
                             @Html.DisplayFor(m => item.Email)
                         </td>
-                        <td></td>
+                        <td>
+                            <a asp-page="../cars/Index" asp-route-id="@item.Id" style="text-decoration: none;">
+                                <img src="images/car.png" width="40px"/> &nbsp; View Cars </a>
+                        </td>
                         <td style="width: 150px">
                             <div class="btn-group" role="group">
                                 <a asp-page="Edit" class="btn btn-primary text-white" asp-route-id="@item.Id">
